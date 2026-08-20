@@ -1,11 +1,11 @@
 {
   "name": "libpng",
-  "version": "1.6.58.0",
+  "version": "1.6.58.1",
   "schemaVersion": 2,
   "kind": "DynamicLib",
   "description": "Official PNG reference library",
   "dependencies": {
-    "zlib": "^1.3.0.0"
+    "zlib": "^1.3.2.3"
   },
   "options": {
     "shared": {

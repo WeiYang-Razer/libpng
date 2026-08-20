@@ -138,6 +138,19 @@ if(PNG_BUILD_ZLIB)
 endif()
 
 # Find the zlib library.
+#
+# Try zlib's own CMake package first. Both it and CMake's bundled FindZLIB name
+# their imported target ZLIB::ZLIB and both guard with "if(NOT TARGET
+# ZLIB::ZLIB)", so whichever runs first wins permanently -- and FindZLIB's
+# version is an UNKNOWN_LIBRARY carrying only DEBUG and RELEASE locations. On a
+# multi-config generator CMake then maps RelWithDebInfo and MinSizeRel onto
+# RELEASE, so libpng18rd.dll and libpng18msr.dll hard-import z.dll instead of
+# zrd.dll and zmsr.dll. A consumer staging matching-config DLLs hits
+# STATUS_DLL_NOT_FOUND (0xC0000135) at load.
+#
+# The config package's target carries per-config IMPORTED_IMPLIB, so claim the
+# name from it when available and fall back to the module otherwise.
+find_package(ZLIB CONFIG QUIET)
 find_package(ZLIB REQUIRED)
 set(PNG_LINK_LIBRARIES ZLIB::ZLIB)
 
